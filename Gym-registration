@@ -1,0 +1,294 @@
+*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ovningar;
+import java.util.*;
+/**
+ *
+ * @author grupp 31
+ */
+public class inlogging { // start av klass
+static boolean checkLuhn(String pnmr) //sätter in checkLuhn för att verifiera personnummer så det stämmer.
+{
+
+    //skapar en  Luhn-algoritm
+    int nDigits = pnmr.length(); // sätter in värde på variabeln nDigits = skapar en Luhn-algoritm
+ 
+    int nSum = 0; //sätter in värde på variabeln nSum
+    boolean isSecond = false; // bestämmer värde på isSecound att det är false
+    for (int i = nDigits - 1; i >= 0; i--) 
+    {
+ 
+        int d = pnmr.charAt(i) - '0'; // bestämmer värde på variabel d 
+ 
+        if (isSecond == true) //bestämmer värde på isSecond om den är lika med sant 
+            d = d * 2;
+ 
+ 
+        nSum += d / 10; // värde på nSum är lika med värde nSum + d/10
+        nSum += d % 10; // värde på nSum är även lika med värde nSum + d%10
+ 
+        isSecond = !isSecond; // bestämmer att isSecond inte är lika med isSecond
+    }
+    return (nSum % 10 == 0); //skickar tillbaka om nSum % 10 är lika med 0
+}
+public static void main (String[] args){ //Start av en metod
+
+//Skapa variabler
+    int option =0; //skapar och sätter in värde på variabeln option
+
+Scanner userIn = new Scanner(System.in); // sätter in en ny scanner
+
+//Meny loop
+
+while (option !=4){
+
+// print  meny
+System.out.println("Vänligen välj en av de följande alternativen");
+System.out.println("1) bli medlem");
+System.out.println("2) logga in");
+System.out.println("3) Boka plats på aktivitet");
+System.out.println("4) Avsluta");
+
+
+//tar svaret från användaren och ger variablen de värdet
+option = userIn.nextInt();
+
+// om kunden svarar 1 i start menyn(bli medlem)
+if (option == 1 ){
+
+//skapar variabler med värde
+int skapaKonto =0;
+int manader =0;
+int kostnad =0;
+int avgift =100;
+int totalt = 0;
+        
+        //visa de olika priserna för kunden
+        System.out.println("Hur många månader vill du registrera dig för?, -1 för att avsluta: ");
+        System.out.println("priser:");
+        System.out.printf("%nMedlemskap – 100 SEK" + "%n1-2 månader – 400 SEK/månad" + "%n3-6 månader – 350 SEK/månad" +
+"%n7-12 månader – 300 SEK/månad" + "%nLängre än 12 månader – 250 SEK/månad%n ");
+
+        manader = userIn.nextInt(); // låter kunden välja antal månader
+
+  //avsluta programmet om -1
+  if ( manader == -1){
+                break;}
+
+//avsluta om man skriver in mindre än 1 månad
+  if ( manader <0){
+System.out.println("Ogiltigt, försök igen.");
+                break;}
+
+//sätter olika kostnader beroende på bindningstid.
+if (manader >= 0 && manader <= 2){
+kostnad =400;}
+if (manader >= 3 && manader <= 6){
+kostnad =350;}
+if (manader >= 7 && manader <= 12){
+kostnad =300;}
+if (manader >12) {
+kostnad= 250;}
+
+//totala kostnaden är månadskosntaden * antal månader
+totalt = kostnad*manader;
+
+//sätter in nya variabler med värde
+long big =0;
+long big2 =0;
+
+System.out.println("Vänligen uppge ditt personnummer(10 siffror utan skiljetecken) för att starta ett konto: "); // printar ut text 
+big = userIn.nextLong(); // låter kunden interagera med att skriva in personnummer
+        
+//ändrar long variabel till en sträng
+        String pnmr = "" +  big;
+
+//skriver välkommen till wakeup, visar kostnader etc.. Samt kan logga in från denna sida.
+        if (checkLuhn(pnmr)){
+            System.out.printf("%nVälkommen som medlem hos WakeUp! Totala medlemskosnaden kommer att vara: " + (totalt+avgift)+ "kr över " + manader + 
+            " månader med en månadskostnad på "+ kostnad + "kr" );
+            System.out.printf("%nDu kan logga in nu direkt genom uppge in ditt personnummer (10 siffror utan sklijetecken), -1 för att avsluta%n");
+                big2 = userIn.nextLong();
+
+                //ändrar pnmr1 variabel till en sträng
+                String pnmr1 = "" +  big2;
+
+                  //avbryt om -1
+        if ( big2 == -1){
+        System.out.println("Inloggningen har avbruten");
+        break;}
+                
+        if (checkLuhn(pnmr1)) // Tittar så att personnummer stämmer gentemot Luhn-algoritmen
+            System.out.println("Du är nu inloggad!"); //printar ut att kunden är inloggad
+        else
+            System.out.println("Ogiltigt personnummer, försök igen."); //printar ut om kunden skriver fel personnummer
+            break;
+   
+                                
+}
+else { //om användaren skriver ett ogiltigt personnummer vid registrering
+System.out.println("ogiltigt personnumer");
+break;
+}
+
+        
+} 
+
+//om kunden svarar 2 i start menyn(logga in)
+if (option == 2 ){
+
+//skapar och sätter in värde på en variabel
+   long big =0;
+
+
+System.out.println("vänligen uppge in ditt personnummer (10 siffror utan sklijetecken) för att logga in, -1 för att avsluta"); //printar ut att kunden ska interagera med skärmen
+big = userIn.nextLong(); //låter kunden interagera med att skriva in personnummer
+
+        
+        String pnmr = "" +  big;
+        if ( big == -1){ //om värdet på variabeln är lika med -1
+        System.out.println("Inloggningen har avbruten"); // printar ut felmeddelande om värdet på variabeln är -1
+        break;}
+                
+        if (checkLuhn(pnmr))  // Tittar så att personnummer stämmer gentemot Luhn-algoritmen
+            System.out.println("Du är nu inloggad!"); // om personnummer stämmer printar den ut
+        else
+            System.out.println("Ogiltigt personnummer, försök igen."); //om personnumret inte stämmer printar ut
+            break;
+                         
+
+}
+
+//om kunden svarar 3 i start menyn(boka plats på aktivitet)
+if (option == 3 ){
+//skapar och sätter in värde på variabeln big
+long big =0;
+
+
+System.out.println("För att boka aktivitet måste du logga in eller verifiera ditt personnummer, vänligen uppge ditt personnumer här; "); //printar att du måste vara inloggad för att boka plats
+big = userIn.nextLong(); //låter kunden interagera och logga in för att boka plats
+
+        
+        String pnmr = "" +  big;
+        if ( big == -1){ //om värdet på variabeln är lika med -1
+        System.out.println("Inloggningen har avbruten"); // printar ut felmeddelande om värdet på variabeln är -1
+
+        break;}
+                
+        if (checkLuhn(pnmr)){
+//skapar och sätter in värde för variabeln val     
+int val =0;
+
+//Frågar vilken aktivitet användaren vill boka
+System.out.println("Vilken typ av aktivitet skulle du vilja boka?");
+System.out.println("Det finns: ");
+System.out.printf("1)Spinning\n");
+System.out.printf("2)Aerobics\n");
+System.out.printf("3)Yoga\n");
+System.out.printf("4)Avsluta\n");
+System.out.print("Välj här: ");
+val =userIn.nextInt();
+
+
+if (val ==1){ //om val är 1 (Spinning)
+
+int plats =0;
+System.out.println("Du har valt Spinning, följande lediga platser finns, vilken vill du boka(skriv in numret bredvid ledig plats)?");
+
+String[] a = { // en string med alla platser för aktiviteten
+            "1a (0) --UPPTAGEN", "2a (1)", "3a (2)", 
+            "1b (3)","2b (4)", "3b (5) --UPPTAGEN", 
+            "1c (6) --UPPTAGEN","2c (7)", "3c (8)",  
+                 };
+for (int i = 0; i < a.length; i++) { 
+  System.out.println(a[i]); //Printar ut alla platser från stringen ovan.
+}
+
+    System.out.print("Välj här: ");// Hänvisar att välja plats här
+    plats = userIn.nextInt();   //Ger variablen “plats” inmatat värde
+   while (plats == 0 || plats == 5 || plats ==6){ // så länge användare väljer 0, 5 eller 6 kommer villkor nedan vara sant.
+
+    System.out.print("Platsen är redan reserverad, vänligen välj en ny plats: ");
+        plats = userIn.nextInt(); } //Från villkoret ovan, kan inte välja plats 0, 5 eller 6.
+            
+            System.out.println("Tack för din bokning! Du har nu reserverat plats " + a[plats]);
+                 break; //tack för din bokning + printar platsen användare valt
+
+
+}
+if (val ==2){ //Om användaren väljer alternativ 2 (Aerobics) i aktivitets menyn.
+
+int plats =0;  //variable 
+System.out.println("Du har valt Aerobics, följande lediga platser finns, vilken vill du boka(skriv in numret bredvid ledig plats)?"); // Printar ut text
+
+String[] a = {
+            "1a (0)", "2a (1)", "3a (2) --UPPTAGEN", 
+            "1b (3)","2b (4)", "3b (5) --UPPTAGEN", 
+            "1c (6)","2c (7) --UPPTAGEN", "3c (8)",  
+                 }; // skapar string för alla platser
+for (int i = 0; i < a.length; i++) { // Loop
+  System.out.println(a[i]);//Printar ut alla platser från stringen ovan.
+}
+
+    System.out.print("Välj här: "); // Printar ut text
+    plats = userIn.nextInt();   //Det värde användare matar in
+while (plats == 2 || plats == 5 || plats ==7){  // så länge användare väljer 0, 5 eller 6 kommer villkor nedan vara sant.
+
+    System.out.print("Platsen är redan reserverad, vänligen välj en ny plats: "); //printar ut text
+        plats = userIn.nextInt(); } //Det värde användare matar in
+            
+            System.out.println("Tack för din bokning! Du har nu reserverat plats " + a[plats]);// Printar ut text
+                 break;
+      
+
+
+}
+if (val ==3){ // om variabel val är = 3
+
+int plats =0; //värde på variabel
+System.out.println("Du har valt Yoga, följande lediga platser finns, vilken vill du boka(skriv in numret bredvid ledig plats)?"); // Printar ut text
+
+String[] a = {
+            "1a (0)", "2a (1) --UPPTAGEN ", "3a (2)", 
+            "1b (3)","2b (4)", "3b (5) --UPPTAGEN", 
+            "1c (6) --UPPTAGEN","2c (7)", "3c (8)",  
+                 }; // skapar string för alla platser
+for (int i = 0; i < a.length; i++) // Loop
+  System.out.println(a[i]); // Printar ut de platser som finns för bokning
+
+
+    System.out.print("Välj här: "); // Skriver ut var användare ska skriva in sitt val
+    plats = userIn.nextInt();  //Det värde användare matar in
+    
+    while (plats == 1 || plats == 5 || plats ==6){ // så länge användare väljer 1, 5 eller 6 kommer villkor nedan vara sant.
+
+    System.out.print("Platsen är redan reserverad, vänligen välj en ny plats: "); //printar ut text
+        plats = userIn.nextInt(); } //Det värde användare matar in
+            
+            System.out.println("Tack för din bokning! Du har nu reserverat plats " + a[plats]); //printar ut platsen användaren har bokat
+                 break;
+        }
+
+
+if (val ==4){   // Om val 4 väljs i menyn, Skriver ut tack för ditt besök!
+System.out.println("Tack för ditt besök!");  
+break;
+}
+
+
+}
+if (checkLuhn(pnmr) == false){ // Om resultatet  Luhn algoritmen inte stämmer = fel
+
+System.out.println("Ogiltigt personnummer försök igen"); // Skriver ut att inmatningen är ogiltigt
+break;
+}
+}
+
+
+}
+
+}
+}
